@@ -71,7 +71,7 @@ export default function Home() {
             <div className="bg-slate-100 dark:bg-slate-800/50 rounded-xl p-4 max-w-2xl mx-auto backdrop-blur-sm border border-slate-200 dark:border-slate-700">
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">Try it now:</p>
               <code className="text-sm font-mono bg-slate-200 dark:bg-slate-700 px-3 py-1.5 rounded-lg text-slate-800 dark:text-slate-200">
-                curl -X POST {process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000'}/in/your-key -d "Hello HookBox!"
+                curl -X POST {process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000'}/in/your-key -d &quot;Hello HookBox!&quot;
               </code>
             </div>
           </div>

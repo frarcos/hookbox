@@ -5,6 +5,9 @@ const WebSocket = require('ws');
 const app = express();
 const port = process.env.PORT || 4000;
 
+// Configure Express to trust proxies (important for Docker)
+app.set('trust proxy', true);
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -14,6 +17,24 @@ const wss = new WebSocket.Server({ noServer: true });
 
 // Map of key -> set of websocket clients
 const clientsMap = new Map();
+
+// Function to extract real client IP
+function getClientIP(req) {
+	// Check various headers that proxies might set
+	const forwarded = req.headers['x-forwarded-for'];
+	if (forwarded) {
+		// X-Forwarded-For can contain multiple IPs, first one is the original client
+		return forwarded.split(',')[0].trim();
+	}
+	
+	// Other common headers
+	return req.headers['x-real-ip'] || 
+		   req.headers['x-client-ip'] || 
+		   req.connection?.remoteAddress || 
+		   req.socket?.remoteAddress ||
+		   req.ip || 
+		   'unknown';
+}
 
 // Upgrade HTTP server to handle WebSocket connections
 const server = app.listen(port, () => {
@@ -62,7 +83,7 @@ app.all('/in/:key', (req, res) => {
 		method: req.method,
 		headers: req.headers,
 		body: req.body,
-		source: req.ip,
+		source: getClientIP(req),
 		timestamp: new Date().toISOString(),
 	};
 

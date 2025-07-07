@@ -356,7 +356,7 @@ function WatchPageContent() {
                                   </div>
                                 </div>
                                 <Badge variant="secondary" className="font-mono text-xs px-2 py-1 flex items-center gap-1">
-                                  🌐 <span className="truncate max-w-20">{request.source}</span>
+                                  🌐 <span>{request.source}</span>
                                 </Badge>
                               </div>
                             </div>
